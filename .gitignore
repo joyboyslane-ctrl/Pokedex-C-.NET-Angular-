@@ -3,3 +3,6 @@ obj/
 node_modules/
 .vs/
 *.user
+dist/
+.angular/
+*.env
