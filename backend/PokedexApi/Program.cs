@@ -1,9 +1,17 @@
 using Scalar.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+using PokedexApi;
+using PokedexApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite("Data Source=pokedex.db"));
+builder.Services.AddHttpClient<PokeApiSyncService>(client =>
+{
+    client.BaseAddress = new Uri("https://pokeapi.co/api/v2/");
+});    
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();

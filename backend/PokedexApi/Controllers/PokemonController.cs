@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PokedexApi.Services;
 
 namespace PokedexApi.Controllers;
 
@@ -6,15 +8,25 @@ namespace PokedexApi.Controllers;
 [Route("[controller]")]
 public class PokemonController : ControllerBase
 {
+    private readonly AppDbContext _db;
+    private readonly PokeApiSyncService _sync;
+
+    public PokemonController(AppDbContext db, PokeApiSyncService sync)
+    {
+        _db = db;
+        _sync = sync;
+    }
 
     [HttpGet]
-    public IEnumerable<Pokemon> Get()
+    public async Task<IEnumerable<Pokemon>> Get()
     {
-        return new List<Pokemon>
+        return await _db.Pokemon.ToListAsync();
+    }
+
+    [HttpPost("sync")]
+    public async Task<string> Sync(int limit = 151)
     {
-        new Pokemon { Id = 1, Name = "Bisasam", HeightDm = 7, WeightHg = 69 },
-        new Pokemon { Id = 4, Name = "Glumanda", HeightDm = 6, WeightHg = 85 },
-        new Pokemon { Id = 7, Name = "Schiggy", HeightDm = 5, WeightHg = 90 }
-    };
+        int added = await _sync.SyncPokemonAsync(limit);
+        return $"{added} neue Pokemon hinzugefügt.";
     }
 }
