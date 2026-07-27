@@ -9,4 +9,5 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<Pokemon> Pokemon { get; set; }
+    public DbSet<PokeType> PokeTypes { get; set; }
 }
