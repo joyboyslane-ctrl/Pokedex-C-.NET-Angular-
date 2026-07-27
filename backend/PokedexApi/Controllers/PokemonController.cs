@@ -20,7 +20,7 @@ public class PokemonController : ControllerBase
     [HttpGet]
     public async Task<IEnumerable<Pokemon>> Get()
     {
-        return await _db.Pokemon.ToListAsync();
+        return await _db.Pokemon.Include(p => p.Types).ToListAsync();
     }
 
     [HttpPost("sync")]

@@ -39,7 +39,23 @@ public class PokeApiSyncService
                 generation = RomanToInt(romanNumeral);
             }
 
-            var existing = await _db.Pokemon.FirstOrDefaultAsync(p => p.Id == dto.Id);
+            var pokeTypes = new List<PokeType>();
+            foreach (var typeSlot in dto.Types)
+            {
+                string typeName = typeSlot.Type.Name;
+                var existingType = await _db.PokeTypes.FirstOrDefaultAsync(t => t.Name == typeName);
+                if (existingType == null)
+                {
+                    existingType = new PokeType { Name = typeName };
+                    _db.PokeTypes.Add(existingType);
+                    await _db.SaveChangesAsync();
+                }
+                pokeTypes.Add(existingType);
+            }
+
+            var existing = await _db.Pokemon
+                .Include(p => p.Types)
+                .FirstOrDefaultAsync(p => p.Id == dto.Id);
 
             if (existing == null)
             {
@@ -52,7 +68,8 @@ public class PokeApiSyncService
                     HeightDm = dto.Height,
                     WeightHg = dto.Weight,
                     Generation = generation,
-                    FlavorText = flavorTextDe?.Replace("\n", " ").Replace("\f", " ")
+                    FlavorText = flavorTextDe?.Replace("\n", " ").Replace("\f", " "),
+                    Types = pokeTypes
                 });
                 added++;
             }
@@ -61,6 +78,9 @@ public class PokeApiSyncService
                 existing.NameDe = nameDe;
                 existing.Generation = generation;
                 existing.FlavorText = flavorTextDe?.Replace("\n", " ").Replace("\f", " ");
+                existing.Types.Clear();
+                foreach (var t in pokeTypes)
+                    existing.Types.Add(t);
                 updated++;
             }
         }

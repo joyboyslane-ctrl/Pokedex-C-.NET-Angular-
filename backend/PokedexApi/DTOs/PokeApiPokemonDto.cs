@@ -9,10 +9,16 @@ public class PokeApiPokemonDto
     public int Height { get; set; }
     public int Weight { get; set; }
     public PokeApiSpritesDto Sprites { get; set; } = new();
+    public List<PokeApiTypeSlotDto> Types { get; set; } = new();
 }
 
 public class PokeApiSpritesDto
 {
     [JsonPropertyName("front_default")]
     public string? FrontDefault { get; set; }
+}
+
+public class PokeApiTypeSlotDto
+{
+    public PokeApiNamedResourceDto Type { get; set; } = new();
 }
