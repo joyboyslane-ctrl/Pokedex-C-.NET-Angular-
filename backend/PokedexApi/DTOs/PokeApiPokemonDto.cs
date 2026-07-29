@@ -10,6 +10,7 @@ public class PokeApiPokemonDto
     public int Weight { get; set; }
     public PokeApiSpritesDto Sprites { get; set; } = new();
     public List<PokeApiTypeSlotDto> Types { get; set; } = new();
+    public List<PokeApiAbilitySlotDto> Abilities { get; set; } = new();
 }
 
 public class PokeApiSpritesDto
@@ -21,4 +22,8 @@ public class PokeApiSpritesDto
 public class PokeApiTypeSlotDto
 {
     public PokeApiNamedResourceDto Type { get; set; } = new();
+}
+public class PokeApiAbilitySlotDto
+{
+    public PokeApiNamedResourceDto Ability { get; set; } = new();
 }

@@ -11,4 +11,5 @@ public class Pokemon
     public int Generation { get; set; }
     public string? FlavorText { get; set; }
     public List<PokeType> Types { get; set; } = new();
+    public List<Ability> Abilities { get; set; } = new();
 }

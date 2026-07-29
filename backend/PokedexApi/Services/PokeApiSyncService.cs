@@ -53,8 +53,23 @@ public class PokeApiSyncService
                 pokeTypes.Add(existingType);
             }
 
+            var abilities = new List<Ability>();
+            foreach (var abilitySlot in dto.Abilities)
+            {
+                string abilityName = abilitySlot.Ability.Name;
+                var existingAbility = await _db.Abilities.FirstOrDefaultAsync(a => a.Name == abilityName);
+                if (existingAbility == null)
+                {
+                    existingAbility = new Ability { Name = abilityName };
+                    _db.Abilities.Add(existingAbility);
+                    await _db.SaveChangesAsync();
+                }
+                abilities.Add(existingAbility);
+            }
+
             var existing = await _db.Pokemon
                 .Include(p => p.Types)
+                .Include(p => p.Abilities)
                 .FirstOrDefaultAsync(p => p.Id == dto.Id);
 
             if (existing == null)
@@ -69,7 +84,8 @@ public class PokeApiSyncService
                     WeightHg = dto.Weight,
                     Generation = generation,
                     FlavorText = flavorTextDe?.Replace("\n", " ").Replace("\f", " "),
-                    Types = pokeTypes
+                    Types = pokeTypes,
+                    Abilities = abilities
                 });
                 added++;
             }
@@ -81,6 +97,9 @@ public class PokeApiSyncService
                 existing.Types.Clear();
                 foreach (var t in pokeTypes)
                     existing.Types.Add(t);
+                existing.Abilities.Clear();
+                foreach (var a in abilities)
+                    existing.Abilities.Add(a);
                 updated++;
             }
         }
