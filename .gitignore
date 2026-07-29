@@ -7,3 +7,5 @@ dist/
 .angular/
 *.env
 *.db
+*.db-shm
+*.db-wal
