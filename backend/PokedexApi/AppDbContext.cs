@@ -12,3 +12,4 @@ public class AppDbContext : DbContext
     public DbSet<PokeType> PokeTypes { get; set; }
     public DbSet<Ability> Abilities { get; set; }
 }
+

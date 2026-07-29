@@ -105,7 +105,28 @@ public class PokeApiSyncService
         }
 
         await _db.SaveChangesAsync();
+        await TranslateMissingNamesAsync();
+
         return added + updated;
+    }
+
+    private async Task TranslateMissingNamesAsync()
+    {
+        var untranslatedTypes = await _db.PokeTypes.Where(t => t.NameDe == null).ToListAsync();
+        foreach (var type in untranslatedTypes)
+        {
+            var translation = await _http.GetFromJsonAsync<PokeApiTranslatedResourceDto>($"type/{type.Name}");
+            type.NameDe = translation?.Names.FirstOrDefault(n => n.Language.Name == "de")?.Name;
+        }
+
+        var untranslatedAbilities = await _db.Abilities.Where(a => a.NameDe == null).ToListAsync();
+        foreach (var ability in untranslatedAbilities)
+        {
+            var translation = await _http.GetFromJsonAsync<PokeApiTranslatedResourceDto>($"ability/{ability.Name}");
+            ability.NameDe = translation?.Names.FirstOrDefault(n => n.Language.Name == "de")?.Name;
+        }
+
+        await _db.SaveChangesAsync();
     }
 
     private int RomanToInt(string roman)
