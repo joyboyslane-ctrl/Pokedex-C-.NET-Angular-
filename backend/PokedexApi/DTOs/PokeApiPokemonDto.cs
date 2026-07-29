@@ -11,18 +11,28 @@ public class PokeApiPokemonDto
     public PokeApiSpritesDto Sprites { get; set; } = new();
     public List<PokeApiTypeSlotDto> Types { get; set; } = new();
     public List<PokeApiAbilitySlotDto> Abilities { get; set; } = new();
+    public PokeApiCriesDto? Cries { get; set; }
 }
 
 public class PokeApiSpritesDto
 {
     [JsonPropertyName("front_default")]
     public string? FrontDefault { get; set; }
+
+    [JsonPropertyName("front_shiny")]
+    public string? FrontShiny { get; set; }
+}
+
+public class PokeApiCriesDto
+{
+    public string? Latest { get; set; }
 }
 
 public class PokeApiTypeSlotDto
 {
     public PokeApiNamedResourceDto Type { get; set; } = new();
 }
+
 public class PokeApiAbilitySlotDto
 {
     public PokeApiNamedResourceDto Ability { get; set; } = new();

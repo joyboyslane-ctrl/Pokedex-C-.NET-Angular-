@@ -80,6 +80,8 @@ public class PokeApiSyncService
                     Name = dto.Name,
                     NameDe = nameDe,
                     SpriteUrl = dto.Sprites.FrontDefault,
+                    ShinySpriteUrl = dto.Sprites.FrontShiny,
+                    CryUrl = dto.Cries?.Latest,
                     HeightDm = dto.Height,
                     WeightHg = dto.Weight,
                     Generation = generation,
@@ -92,6 +94,8 @@ public class PokeApiSyncService
             else
             {
                 existing.NameDe = nameDe;
+                existing.ShinySpriteUrl = dto.Sprites.FrontShiny;
+                existing.CryUrl = dto.Cries?.Latest;
                 existing.Generation = generation;
                 existing.FlavorText = flavorTextDe?.Replace("\n", " ").Replace("\f", " ");
                 existing.Types.Clear();

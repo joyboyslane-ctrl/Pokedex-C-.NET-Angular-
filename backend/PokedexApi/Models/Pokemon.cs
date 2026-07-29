@@ -6,6 +6,8 @@ public class Pokemon
     public string Name { get; set; } = string.Empty;
     public string? NameDe { get; set; }
     public string? SpriteUrl { get; set; }
+    public string? ShinySpriteUrl { get; set; }
+    public string? CryUrl { get; set; }
     public int HeightDm { get; set; }
     public int WeightHg { get; set; }
     public int Generation { get; set; }
