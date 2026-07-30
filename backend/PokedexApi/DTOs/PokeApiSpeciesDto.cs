@@ -10,6 +10,9 @@ public class PokeApiSpeciesDto
     public List<PokeApiFlavorTextDto> FlavorTextEntries { get; set; } = new();
 
     public PokeApiNamedResourceDto Generation { get; set; } = new();
+
+    [JsonPropertyName("evolves_from_species")]
+    public PokeApiNamedResourceDto? EvolvesFromSpecies { get; set; }
 }
 
 public class PokeApiNameDto
@@ -33,4 +36,5 @@ public class PokeApiLanguageDto
 public class PokeApiNamedResourceDto
 {
     public string Name { get; set; } = string.Empty;
+    public string? Url { get; set; }
 }

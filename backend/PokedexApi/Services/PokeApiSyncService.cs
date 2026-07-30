@@ -39,6 +39,12 @@ public class PokeApiSyncService
                 generation = RomanToInt(romanNumeral);
             }
 
+            int? evolvesFromId = null;
+            if (speciesDto?.EvolvesFromSpecies?.Url != null)
+            {
+                evolvesFromId = ExtractIdFromUrl(speciesDto.EvolvesFromSpecies.Url);
+            }
+
             var pokeTypes = new List<PokeType>();
             foreach (var typeSlot in dto.Types)
             {
@@ -86,6 +92,7 @@ public class PokeApiSyncService
                     WeightHg = dto.Weight,
                     Generation = generation,
                     FlavorText = flavorTextDe?.Replace("\n", " ").Replace("\f", " "),
+                    EvolvesFromId = evolvesFromId,
                     Types = pokeTypes,
                     Abilities = abilities
                 });
@@ -98,6 +105,7 @@ public class PokeApiSyncService
                 existing.CryUrl = dto.Cries?.Latest;
                 existing.Generation = generation;
                 existing.FlavorText = flavorTextDe?.Replace("\n", " ").Replace("\f", " ");
+                existing.EvolvesFromId = evolvesFromId;
                 existing.Types.Clear();
                 foreach (var t in pokeTypes)
                     existing.Types.Add(t);
@@ -131,6 +139,14 @@ public class PokeApiSyncService
         }
 
         await _db.SaveChangesAsync();
+    }
+
+    private int? ExtractIdFromUrl(string url)
+    {
+        var parts = url.TrimEnd('/').Split('/');
+        if (int.TryParse(parts[^1], out int id))
+            return id;
+        return null;
     }
 
     private int RomanToInt(string roman)

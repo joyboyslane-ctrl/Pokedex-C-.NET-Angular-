@@ -12,6 +12,7 @@ public class Pokemon
     public int WeightHg { get; set; }
     public int Generation { get; set; }
     public string? FlavorText { get; set; }
+    public int? EvolvesFromId { get; set; }
     public List<PokeType> Types { get; set; } = new();
     public List<Ability> Abilities { get; set; } = new();
 }
