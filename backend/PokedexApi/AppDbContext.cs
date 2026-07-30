@@ -11,5 +11,6 @@ public class AppDbContext : DbContext
     public DbSet<Pokemon> Pokemon { get; set; }
     public DbSet<PokeType> PokeTypes { get; set; }
     public DbSet<Ability> Abilities { get; set; }
+    public DbSet<Favorite> Favorites { get; set; }
 }
 
