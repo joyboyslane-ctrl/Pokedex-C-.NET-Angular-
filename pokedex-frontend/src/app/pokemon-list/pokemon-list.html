@@ -2,9 +2,10 @@
 
 <div class="pokemon-grid">
   @for (pokemon of pokemons(); track pokemon.id) {
-    <div class="pokemon-card">
+    <a [routerLink]="['/pokemon', pokemon.id]" class="pokemon-card">
+      <span class="pokemon-number">#{{ pokemon.id }}</span>
       <img [src]="pokemon.spriteUrl" [alt]="pokemon.name" />
       <p>{{ pokemon.nameDe || pokemon.name }}</p>
-    </div>
+    </a>
   }
 </div>
