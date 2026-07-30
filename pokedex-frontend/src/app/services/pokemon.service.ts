@@ -14,4 +14,8 @@ export class PokemonService {
   getAll(): Observable<Pokemon[]> {
     return this.http.get<Pokemon[]>(this.apiUrl);
   }
+
+  getById(id: number): Observable<Pokemon> {
+    return this.http.get<Pokemon>(`${this.apiUrl}/${id}`);
+  }
 }
