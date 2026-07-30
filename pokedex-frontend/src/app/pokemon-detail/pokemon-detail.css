@@ -1,0 +1,23 @@
+.detail-container {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.pokemon-number {
+  color: #888;
+  font-size: 0.8em;
+}
+
+.types {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.type-badge {
+  background-color: #eee;
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-size: 0.9em;
+}

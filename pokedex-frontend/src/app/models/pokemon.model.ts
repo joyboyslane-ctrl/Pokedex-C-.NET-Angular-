@@ -4,6 +4,11 @@ export interface PokeType {
   nameDe: string | null;
 }
 
+export interface Weakness {
+  name: string;
+  nameDe: string;
+}
+
 export interface Pokemon {
   id: number;
   name: string;
@@ -17,5 +22,5 @@ export interface Pokemon {
   flavorText: string | null;
   evolvesFromId: number | null;
   types: PokeType[];
-  weaknesses: string[];
+  weaknesses: Weakness[];
 }

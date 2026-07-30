@@ -22,8 +22,8 @@
 
     <h3>Schwächen</h3>
     <div class="types">
-      @for (weakness of p.weaknesses; track weakness) {
-        <span class="type-badge">{{ weakness }}</span>
+      @for (weakness of p.weaknesses; track weakness.name) {
+        <span class="type-badge">{{ weakness.nameDe }}</span>
       }
     </div>
   </div>
