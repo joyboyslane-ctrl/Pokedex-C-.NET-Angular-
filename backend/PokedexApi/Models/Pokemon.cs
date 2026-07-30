@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using PokedexApi.Services;
+
 namespace PokedexApi;
 
 public class Pokemon
@@ -15,4 +18,7 @@ public class Pokemon
     public int? EvolvesFromId { get; set; }
     public List<PokeType> Types { get; set; } = new();
     public List<Ability> Abilities { get; set; } = new();
+
+    [NotMapped]
+    public List<string> Weaknesses => TypeEffectivenessService.GetWeaknesses(Types.Select(t => t.Name).ToList());
 }
