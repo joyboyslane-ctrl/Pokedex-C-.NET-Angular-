@@ -18,10 +18,25 @@ public class PokemonController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<Pokemon>> Get()
+public async Task<IEnumerable<Pokemon>> Get(string? search, string? type)
+{
+    var query = _db.Pokemon
+        .Include(p => p.Types)
+        .Include(p => p.Abilities)
+        .AsQueryable();
+
+    if (!string.IsNullOrWhiteSpace(search))
     {
-        return await _db.Pokemon.Include(p => p.Types).Include(p => p.Abilities).ToListAsync();
+        query = query.Where(p => p.Name.Contains(search) || (p.NameDe != null && p.NameDe.Contains(search)));
     }
+
+    if (!string.IsNullOrWhiteSpace(type))
+    {
+        query = query.Where(p => p.Types.Any(t => t.Name == type || t.NameDe == type));
+    }
+
+    return await query.ToListAsync();
+}
 
     [HttpPost("sync")]
     public async Task<string> Sync(int limit = 151)
