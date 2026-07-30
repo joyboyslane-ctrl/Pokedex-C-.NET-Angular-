@@ -1,0 +1,10 @@
+<h2>Alle Pokemon</h2>
+
+<div class="pokemon-grid">
+  @for (pokemon of pokemons(); track pokemon.id) {
+    <div class="pokemon-card">
+      <img [src]="pokemon.spriteUrl" [alt]="pokemon.name" />
+      <p>{{ pokemon.nameDe || pokemon.name }}</p>
+    </div>
+  }
+</div>
