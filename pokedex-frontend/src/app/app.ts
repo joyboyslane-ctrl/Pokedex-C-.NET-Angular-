@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { LanguageService } from './services/language.service';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +10,6 @@ import { RouterOutlet } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('pokedex-frontend');
+
+  constructor(public languageService: LanguageService) {}
 }

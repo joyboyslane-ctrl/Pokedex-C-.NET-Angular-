@@ -15,10 +15,11 @@ public class Pokemon
     public int WeightHg { get; set; }
     public int Generation { get; set; }
     public string? FlavorText { get; set; }
+    public string? FlavorTextEn { get; set; }
     public int? EvolvesFromId { get; set; }
     public List<PokeType> Types { get; set; } = new();
     public List<Ability> Abilities { get; set; } = new();
 
     [NotMapped]
-    public List<string> Weaknesses => TypeEffectivenessService.GetWeaknesses(Types.Select(t => t.Name).ToList());
-}
+    public List<WeaknessInfo> Weaknesses => TypeEffectivenessService.GetWeaknesses(Types.Select(t => t.Name).ToList());
+    }

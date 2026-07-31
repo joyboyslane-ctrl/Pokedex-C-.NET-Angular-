@@ -15,12 +15,12 @@ public class PokeApiSyncService
         _db = db;
     }
 
-    public async Task<int> SyncPokemonAsync(int limit)
+    public async Task<int> SyncPokemonAsync(int start, int end)
     {
         int added = 0;
         int updated = 0;
 
-        for (int id = 1; id <= limit; id++)
+        for (int id = start; id <= end; id++)
         {
             var dto = await _http.GetFromJsonAsync<PokeApiPokemonDto>($"pokemon/{id}");
             if (dto == null) continue;
@@ -31,6 +31,8 @@ public class PokeApiSyncService
                 .FirstOrDefault(n => n.Language.Name == "de")?.Name;
             string? flavorTextDe = speciesDto?.FlavorTextEntries
                 .FirstOrDefault(f => f.Language.Name == "de")?.FlavorText;
+            string? flavorTextEn = speciesDto?.FlavorTextEntries
+                .FirstOrDefault(f => f.Language.Name == "en")?.FlavorText;
 
             int generation = 1;
             if (speciesDto != null)
@@ -92,6 +94,7 @@ public class PokeApiSyncService
                     WeightHg = dto.Weight,
                     Generation = generation,
                     FlavorText = flavorTextDe?.Replace("\n", " ").Replace("\f", " "),
+                    FlavorTextEn = flavorTextEn?.Replace("\n", " ").Replace("\f", " "),
                     EvolvesFromId = evolvesFromId,
                     Types = pokeTypes,
                     Abilities = abilities
@@ -105,6 +108,7 @@ public class PokeApiSyncService
                 existing.CryUrl = dto.Cries?.Latest;
                 existing.Generation = generation;
                 existing.FlavorText = flavorTextDe?.Replace("\n", " ").Replace("\f", " ");
+                existing.FlavorTextEn = flavorTextEn?.Replace("\n", " ").Replace("\f", " ");
                 existing.EvolvesFromId = evolvesFromId;
                 existing.Types.Clear();
                 foreach (var t in pokeTypes)

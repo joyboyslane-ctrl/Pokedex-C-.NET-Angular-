@@ -18,30 +18,43 @@ public class PokemonController : ControllerBase
     }
 
     [HttpGet]
-public async Task<IEnumerable<Pokemon>> Get(string? search, string? type)
-{
-    var query = _db.Pokemon
-        .Include(p => p.Types)
-        .Include(p => p.Abilities)
-        .AsQueryable();
-
-    if (!string.IsNullOrWhiteSpace(search))
+    public async Task<IEnumerable<Pokemon>> Get(string? search, string? type)
     {
-        query = query.Where(p => p.Name.Contains(search) || (p.NameDe != null && p.NameDe.Contains(search)));
+        var query = _db.Pokemon
+            .Include(p => p.Types)
+            .Include(p => p.Abilities)
+            .AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            query = query.Where(p => p.Name.Contains(search) || (p.NameDe != null && p.NameDe.Contains(search)));
+        }
+
+        if (!string.IsNullOrWhiteSpace(type))
+        {
+            query = query.Where(p => p.Types.Any(t => t.Name == type || t.NameDe == type));
+        }
+
+        return await query.ToListAsync();
     }
 
-    if (!string.IsNullOrWhiteSpace(type))
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Pokemon>> GetById(int id)
     {
-        query = query.Where(p => p.Types.Any(t => t.Name == type || t.NameDe == type));
-    }
+        var pokemon = await _db.Pokemon
+            .Include(p => p.Types)
+            .Include(p => p.Abilities)
+            .FirstOrDefaultAsync(p => p.Id == id);
 
-    return await query.ToListAsync();
-}
+        if (pokemon == null) return NotFound();
+
+        return Ok(pokemon);
+    }
 
     [HttpPost("sync")]
-    public async Task<string> Sync(int limit = 151)
+    public async Task<string> Sync(int start = 1, int end = 1025)
     {
-        int added = await _sync.SyncPokemonAsync(limit);
-        return $"{added} neue Pokemon hinzugefügt.";
+    int added = await _sync.SyncPokemonAsync(start, end);
+    return $"{added} Pokemon synchronisiert (Bereich {start}-{end}).";
     }
 }

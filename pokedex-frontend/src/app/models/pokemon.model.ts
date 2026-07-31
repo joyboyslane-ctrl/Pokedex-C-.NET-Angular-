@@ -20,6 +20,7 @@ export interface Pokemon {
   weightHg: number;
   generation: number;
   flavorText: string | null;
+  flavorTextEn: string | null;
   evolvesFromId: number | null;
   types: PokeType[];
   weaknesses: Weakness[];

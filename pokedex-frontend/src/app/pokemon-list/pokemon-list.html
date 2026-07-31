@@ -5,7 +5,7 @@
     <a [routerLink]="['/pokemon', pokemon.id]" class="pokemon-card">
       <span class="pokemon-number">#{{ pokemon.id }}</span>
       <img [src]="pokemon.spriteUrl" [alt]="pokemon.name" />
-      <p>{{ pokemon.nameDe || pokemon.name }}</p>
+      <p>{{ languageService.isGerman() ? (pokemon.nameDe || pokemon.name) : pokemon.name }}</p>
     </a>
   }
 </div>

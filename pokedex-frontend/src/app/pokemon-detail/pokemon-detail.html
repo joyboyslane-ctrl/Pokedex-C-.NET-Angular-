@@ -1,32 +1,35 @@
 @if (pokemon(); as p) {
   <div class="detail-container">
-    <a routerLink="/">← Zurück zum Verzeichnis</a>
+    <a routerLink="/">← {{ languageService.isGerman() ? 'Zurück zum Verzeichnis' : 'Back to list' }}</a>
 
-    <h2>{{ p.nameDe || p.name }} <span class="pokemon-number">#{{ p.id }}</span></h2>
+    <h2>
+      {{ languageService.isGerman() ? (p.nameDe || p.name) : p.name }}
+      <span class="pokemon-number">#{{ p.id }}</span>
+    </h2>
 
     <img [src]="p.spriteUrl" [alt]="p.name" />
 
     <div class="types">
       @for (type of p.types; track type.id) {
-        <span class="type-badge">{{ type.nameDe || type.name }}</span>
+        <span class="type-badge">{{ languageService.isGerman() ? (type.nameDe || type.name) : type.name }}</span>
       }
     </div>
 
-    <p>{{ p.flavorText }}</p>
+    <p>{{ languageService.isGerman() ? p.flavorText : p.flavorTextEn }}</p>
 
     <ul>
-      <li>Größe: {{ p.heightDm / 10 }} m</li>
-      <li>Gewicht: {{ p.weightHg / 10 }} kg</li>
-      <li>Generation: {{ p.generation }}</li>
+      <li>{{ languageService.isGerman() ? 'Größe' : 'Height' }}: {{ p.heightDm / 10 }} m</li>
+      <li>{{ languageService.isGerman() ? 'Gewicht' : 'Weight' }}: {{ p.weightHg / 10 }} kg</li>
+      <li>{{ languageService.isGerman() ? 'Generation' : 'Generation' }}: {{ p.generation }}</li>
     </ul>
 
-    <h3>Schwächen</h3>
+    <h3>{{ languageService.isGerman() ? 'Schwächen' : 'Weaknesses' }}</h3>
     <div class="types">
       @for (weakness of p.weaknesses; track weakness.name) {
-        <span class="type-badge">{{ weakness.nameDe }}</span>
+        <span class="type-badge">{{ languageService.isGerman() ? weakness.nameDe : weakness.name }}</span>
       }
     </div>
   </div>
 } @else {
-  <p>Lade Pokemon...</p>
+  <p>{{ languageService.isGerman() ? 'Lade Pokemon...' : 'Loading Pokemon...' }}</p>
 }

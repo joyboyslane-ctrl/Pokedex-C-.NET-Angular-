@@ -1,6 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PokemonService } from '../services/pokemon.service';
+import { LanguageService } from '../services/language.service';
 import { Pokemon } from '../models/pokemon.model';
 
 @Component({
@@ -12,7 +13,10 @@ import { Pokemon } from '../models/pokemon.model';
 export class PokemonList implements OnInit {
   pokemons = signal<Pokemon[]>([]);
 
-  constructor(private pokemonService: PokemonService) {}
+  constructor(
+    private pokemonService: PokemonService,
+    public languageService: LanguageService
+  ) {}
 
   ngOnInit(): void {
     this.pokemonService.getAll().subscribe(data => {

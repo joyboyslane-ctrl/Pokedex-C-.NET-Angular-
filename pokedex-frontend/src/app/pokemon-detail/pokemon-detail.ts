@@ -1,8 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PokemonService } from '../services/pokemon.service';
+import { LanguageService } from '../services/language.service';
 import { Pokemon } from '../models/pokemon.model';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-pokemon-detail',
@@ -15,7 +15,8 @@ export class PokemonDetail implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private pokemonService: PokemonService
+    private pokemonService: PokemonService,
+    public languageService: LanguageService
   ) {}
 
   ngOnInit(): void {

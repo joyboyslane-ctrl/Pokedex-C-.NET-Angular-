@@ -1,2 +1,5 @@
 <h1>Pokedex</h1>
+<button (click)="languageService.toggle()">
+  {{ languageService.isGerman() ? '🇩🇪 Deutsch' : '🇬🇧 English' }}
+</button>
 <router-outlet></router-outlet>

@@ -1,5 +1,11 @@
 namespace PokedexApi.Services;
 
+public class WeaknessInfo
+{
+    public string Name { get; set; } = string.Empty;
+    public string NameDe { get; set; } = string.Empty;
+}
+
 public static class TypeEffectivenessService
 {
     private static readonly Dictionary<string, List<string>> WeakAgainst = new()
@@ -24,7 +30,17 @@ public static class TypeEffectivenessService
         { "fairy", new List<string> { "poison", "steel" } }
     };
 
-    public static List<string> GetWeaknesses(List<string> pokemonTypes)
+    private static readonly Dictionary<string, string> GermanNames = new()
+    {
+        { "normal", "Normal" }, { "fire", "Feuer" }, { "water", "Wasser" },
+        { "electric", "Elektro" }, { "grass", "Pflanze" }, { "ice", "Eis" },
+        { "fighting", "Kampf" }, { "poison", "Gift" }, { "ground", "Boden" },
+        { "flying", "Flug" }, { "psychic", "Psycho" }, { "bug", "Käfer" },
+        { "rock", "Gestein" }, { "ghost", "Geist" }, { "dragon", "Drache" },
+        { "dark", "Unlicht" }, { "steel", "Stahl" }, { "fairy", "Fee" }
+    };
+
+    public static List<WeaknessInfo> GetWeaknesses(List<string> pokemonTypes)
     {
         var weaknesses = new HashSet<string>();
         foreach (var type in pokemonTypes)
@@ -35,6 +51,11 @@ public static class TypeEffectivenessService
                     weaknesses.Add(w);
             }
         }
-        return weaknesses.ToList();
+
+        return weaknesses.Select(w => new WeaknessInfo
+        {
+            Name = w,
+            NameDe = GermanNames.TryGetValue(w, out var de) ? de : w
+        }).ToList();
     }
 }
